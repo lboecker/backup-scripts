@@ -1,0 +1,8 @@
+[Unit]
+Description=system-backup service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/system-backup
+# https://borgbackup.readthedocs.io/en/stable/usage/general.html#environment-variables
+Environment=BORG_REPO=/backup/borg-repo

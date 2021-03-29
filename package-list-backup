@@ -1,0 +1,8 @@
+#!/bin/bash
+
+set -eu -o pipefail
+
+outfile="$PACKAGE_LIST_BACKUP_DIR/package_list.txt"
+
+pacman -Qqe > "$outfile.new"
+mv "$outfile.new" "$outfile"

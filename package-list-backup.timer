@@ -1,0 +1,10 @@
+[Unit]
+Description=package-list-backup timer
+
+[Timer]
+OnCalendar=daily
+RandomizedDelaySec=15min
+Persistent=true
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,56 @@
+#!/bin/bash
+
+set -u -o pipefail
+
+info() {
+  echo "$*" >&2
+}
+
+trap "echo 'Backup interrupted' >&2; exit 2" INT TERM
+
+info "Starting backup"
+
+borg create                           \
+  --verbose                           \
+  --filter AME                        \
+  --list                              \
+  --stats                             \
+  --show-rc                           \
+  --compression zstd                  \
+  --exclude-caches                    \
+  --exclude '/home/*/.cache/*'        \
+  --exclude '/root/.cache/*'          \
+  --exclude '/var/cache/pacman/pkg/*' \
+  --exclude '/var/tmp/*'              \
+                                      \
+  ::'{hostname}-{now}'                \
+  /etc                                \
+  /home                               \
+  /root                               \
+  /var
+
+backup_exit=$?
+
+info "Pruning repository"
+
+borg prune               \
+  --list                 \
+  --prefix '{hostname}-' \
+  --show-rc              \
+  --keep-daily    7      \
+  --keep-weekly   4      \
+  --keep-monthly  6
+
+prune_exit=$?
+
+global_exit=$((backup_exit > prune_exit ? backup_exit : prune_exit))
+
+if [[ $global_exit -eq 0 ]]; then
+  info "Backup and prune finished successfully"
+elif [[ $global_exit -eq 1 ]]; then
+  info "Backup and/or prune finished with warnings"
+else
+  info "Backup and/or prune finished with errors"
+fi
+
+exit $global_exit

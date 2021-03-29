@@ -1,0 +1,10 @@
+[Unit]
+Description=system-backup timer
+
+[Timer]
+OnCalendar=daily
+RandomizedDelaySec=15min
+Persistent=true
+
+[Install]
+WantedBy=timers.target

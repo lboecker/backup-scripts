@@ -1,0 +1,7 @@
+[Unit]
+Description=package-list-backup service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/package-list-backup
+Environment=PACKAGE_LIST_BACKUP_DIR=/backup/package-list-backup
