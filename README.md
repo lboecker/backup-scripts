@@ -1,5 +1,7 @@
 # Backup Scripts
 
+![GitHub Workflow Status (branch)](https://img.shields.io/github/workflow/status/lboecker/backup-scripts/CI/main?label=ci)
+
 ## Install
 
 ```sh
